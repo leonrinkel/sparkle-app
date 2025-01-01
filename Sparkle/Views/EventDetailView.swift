@@ -26,8 +26,19 @@ struct EventDetailView: View {
                 }
             }
             ToolbarItem(placement: .secondaryAction) {
-                Button("Edit Event", systemImage: "pencil") {
+                Button("Edit", systemImage: "pencil") {
                     showEditEvent = true
+                }
+            }
+            ToolbarItem(placement: .secondaryAction) {
+                Button {
+                    event.pinned.toggle()
+                } label: {
+                    if event.pinned {
+                        Label("Unpin", systemImage: "pin.slash")
+                    } else {
+                        Label("Pin", systemImage: "pin")
+                    }
                 }
             }
         }
