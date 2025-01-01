@@ -16,7 +16,7 @@ struct EventListItem: View {
         NavigationLink(value: event) {
             HStack {
                 Circle()
-                    .fill(Color.blue)
+                    .fill(Color(event.color))
                     .frame(width: 64, height: 64)
                     .overlay {
                         Text(String(event.emoji.first!))

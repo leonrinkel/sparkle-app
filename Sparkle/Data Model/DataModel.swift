@@ -16,6 +16,7 @@ actor DataModel {
     nonisolated lazy var modelContainer: ModelContainer = {
         let modelContainer: ModelContainer
         do {
+            ValueTransformer.setValueTransformer(UIColorValueTransformer(), forName: NSValueTransformerName("UIColorValueTransformer"))
             modelContainer = try ModelContainer(for: TrackedEvent.self)
         } catch {
             fatalError("Failed to create the model container: \(error)")

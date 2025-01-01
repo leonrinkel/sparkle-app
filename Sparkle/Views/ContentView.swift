@@ -49,7 +49,6 @@ struct ContentView: View {
             NavigationStack {
                 AddEventView()
             }
-            .presentationDetents([.medium, .large])
         }
     }
 

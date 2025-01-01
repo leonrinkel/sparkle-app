@@ -6,29 +6,42 @@
 //
 
 import SwiftUI
+import MCEmojiPicker
 
 struct AddEventView: View {
     
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     
-    @State private var emoji: String = ""
+    @State private var isEmojiPickerPresented: Bool = false
+    
+    @State private var color: Color = Color(UIColor.lightGray)
+    @State private var emoji: String = "🍕"
     @State private var title: String = ""
     
     var body: some View {
         EventForm {
-            Section(header: Text("Event Title")) {
+            Section(header: Text("Title")) {
                 EventGroupBox {
-                    TextField("Enter title here…", text: $title)
+                    TextField("Ate Pizza", text: $title)
                 }
             }
-            Section(header: Text("Emoji")) {
+            Section(header: Text("Symbol")) {
                 EventGroupBox {
-                    TextField("Enter emoji here…", text: $emoji)
+                    HStack {
+                        Text("Emoji")
+                        Spacer()
+                        Button {
+                            isEmojiPickerPresented.toggle()
+                        } label: {
+                            Text(emoji)
+                        }
+                        .emojiPicker(isPresented: $isEmojiPickerPresented, selectedEmoji: $emoji)
+                    }
+                    ColorPicker("Background", selection: $color, supportsOpacity: false)
                 }
             }
         }
-        .frame(idealWidth: LayoutConstants.sheetIdealWidth, idealHeight: LayoutConstants.sheetIdealHeight)
         .navigationTitle("Add Event")
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
@@ -37,7 +50,7 @@ struct AddEventView: View {
                 }
             }
             ToolbarItem(placement: .primaryAction) {
-                Button("Done") {
+                Button("Add") {
                     addEvent()
                     dismiss()
                 }
@@ -48,7 +61,7 @@ struct AddEventView: View {
     
     private func addEvent() {
         withAnimation {
-            let newEvent = TrackedEvent(emoji: emoji, title: title)
+            let newEvent = TrackedEvent(color: UIColor(color), emoji: emoji, title: title, addedAt: .now, loggedInstances: [])
             modelContext.insert(newEvent)
         }
     }

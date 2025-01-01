@@ -14,32 +14,34 @@ import SwiftUI
     #Index<TrackedEvent>([\.title])
     #Unique<TrackedEvent>([\.title])
     
-    @Attribute(.preserveValueOnDeletion)
+    @Attribute(.transformable(by: UIColorValueTransformer.self))
+    var color: UIColor = UIColor.lightGray
+
     var emoji: String
 
-    @Attribute(.preserveValueOnDeletion)
     var title: String
-    
-    @Attribute(.preserveValueOnDeletion)
-    var addedAt: Date
+
+    var addedAt: Date = Date.now
 
     @Relationship(deleteRule: .cascade, inverse: \LoggedInstance.event)
     var loggedInstances: [LoggedInstance] = [LoggedInstance]()
 
-    init(emoji: String, title: String) {
+    init(color: UIColor, emoji: String, title: String, addedAt: Date, loggedInstances: [LoggedInstance]) {
+        self.color = color
         self.emoji = emoji
         self.title = title
-        self.addedAt = Date.now
+        self.addedAt = addedAt
+        self.loggedInstances = loggedInstances
     }
-
+    
 }
 
 extension TrackedEvent {
 
     static var previewEvents: [TrackedEvent] {
         [
-            .init(emoji: "🍕", title: "Ate Pizza"),
-            .init(emoji: "🏢", title: "Went to the Office"),
+            .init(color: .lightGray, emoji: "🍕", title: "Ate Pizza", addedAt: .now, loggedInstances: []),
+            .init(color: .lightGray, emoji: "🏢", title: "Went to the Office", addedAt: .now, loggedInstances: []),
         ]
     }
 

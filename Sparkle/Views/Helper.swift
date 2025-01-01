@@ -14,8 +14,3 @@ typealias EventGroupBox = GroupBox
 typealias EventForm = Form
 typealias EventGroupBox = Group
 #endif
-
-struct LayoutConstants {
-    static let sheetIdealWidth = 400.0
-    static let sheetIdealHeight = 500.0
-}

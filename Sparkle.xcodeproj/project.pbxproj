@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		3544AB242D25A1D100BF0792 /* MCEmojiPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 3544AB232D25A1D100BF0792 /* MCEmojiPicker */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		3544AABB2D234EF500BF0792 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3544AB242D25A1D100BF0792 /* MCEmojiPicker in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +130,7 @@
 			);
 			name = Sparkle;
 			packageProductDependencies = (
+				3544AB232D25A1D100BF0792 /* MCEmojiPicker */,
 			);
 			productName = Sparkle;
 			productReference = 3544AAA62D234EF400BF0792 /* Sparkle.app */;
@@ -208,6 +214,9 @@
 			);
 			mainGroup = 3544AA9D2D234EF400BF0792;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				3544AB222D25A1D100BF0792 /* XCRemoteSwiftPackageReference "MCEmojiPicker" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3544AAA72D234EF400BF0792 /* Products */;
 			projectDirPath = "";
@@ -606,6 +615,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3544AB222D25A1D100BF0792 /* XCRemoteSwiftPackageReference "MCEmojiPicker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/izyumkin/MCEmojiPicker";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3544AB232D25A1D100BF0792 /* MCEmojiPicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3544AB222D25A1D100BF0792 /* XCRemoteSwiftPackageReference "MCEmojiPicker" */;
+			productName = MCEmojiPicker;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3544AA9E2D234EF400BF0792 /* Project object */;
 }
