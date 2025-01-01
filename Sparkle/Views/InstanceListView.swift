@@ -23,7 +23,7 @@ struct InstanceListView: View {
     
     init(event: TrackedEvent) {
         let eventTitle = event.title
-        let predicate = #Predicate<LoggedInstance> { $0.event.title == eventTitle }
+        let predicate = #Predicate<LoggedInstance> { $0.event?.title == eventTitle }
         _instances = Query(filter: predicate, sort: \LoggedInstance.timestamp, order: .reverse)
     }
     

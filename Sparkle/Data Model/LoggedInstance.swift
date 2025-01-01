@@ -10,7 +10,7 @@ import SwiftData
 
 @Model class LoggedInstance {
 
-    var event: TrackedEvent
+    var event: TrackedEvent?
 
     var timestamp: Date
 
