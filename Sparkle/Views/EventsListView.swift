@@ -105,13 +105,13 @@ struct EventsListView: View {
                     .tint(.yellow)
                 }
         }
-        .onDelete(perform: deleteEvents(at:))
-        .onMove(perform: moveEvents(from:to:))
+        .onDelete { deleteEvents(at: $0, in: events) }
+        .onMove { moveEvents(from: $0, to: $1, in: events) }
     }
     
-    private func deleteEvents(at offsets: IndexSet) {
+    private func deleteEvents(at offsets: IndexSet, in list: [TrackedEvent]) {
         withAnimation {
-            offsets.map { allEvents[$0] }.forEach(deleteEvent)
+            offsets.map { list[$0] }.forEach(deleteEvent)
         }
     }
     
@@ -122,10 +122,10 @@ struct EventsListView: View {
         modelContext.delete(event)
     }
     
-    private func moveEvents(from source: IndexSet, to destination: Int) {
-        var events = allEvents
-        events.move(fromOffsets: source, toOffset: destination)
-        for (index, event) in events.enumerated() {
+    private func moveEvents(from source: IndexSet, to destination: Int, in list: [TrackedEvent]) {
+        var mutableList = list
+        mutableList.move(fromOffsets: source, toOffset: destination)
+        for (index, event) in mutableList.enumerated() {
             event.order = index
         }
         order.listBy = .manual
