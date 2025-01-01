@@ -18,7 +18,7 @@ struct ContentView: View {
 
     var body: some View {
         NavigationSplitView {
-            EventsListView(order: order, selection: $selection, eventCount: $eventCount, searchText: searchText)
+            EventsListView(order: $order, selection: $selection, eventCount: $eventCount, searchText: searchText)
 #if os(macOS)
             .navigationSplitViewColumnWidth(min: 180, ideal: 200)
 #endif

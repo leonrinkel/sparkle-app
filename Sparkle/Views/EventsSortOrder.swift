@@ -15,10 +15,10 @@ import Foundation
     
 }
 
-// TODO: Add manual sorting
 // TODO: Add times logged sorting
 enum EventsListBy: CaseIterable, Identifiable, CustomStringConvertible {
 
+    case manual
     case dateAdded
     case title
     
@@ -26,6 +26,8 @@ enum EventsListBy: CaseIterable, Identifiable, CustomStringConvertible {
 
     var description: String {
         switch self {
+        case .manual:
+            return "Manual"
         case .dateAdded:
             return "Date Added"
         case .title:
