@@ -13,17 +13,15 @@ struct AddEventView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     
-    @State private var isEmojiPickerPresented: Bool = false
+    @State private var draft: TrackedEvent.Draft = .empty
     
-    @State private var color: Color = Color(UIColor.lightGray)
-    @State private var emoji: String = "🍕"
-    @State private var title: String = ""
+    @State private var isEmojiPickerPresented: Bool = false
     
     var body: some View {
         EventForm {
             Section(header: Text("Title")) {
                 EventGroupBox {
-                    TextField("Ate Pizza", text: $title)
+                    TextField("Ate Pizza", text: $draft.title)
                 }
             }
             Section(header: Text("Symbol")) {
@@ -34,11 +32,11 @@ struct AddEventView: View {
                         Button {
                             isEmojiPickerPresented.toggle()
                         } label: {
-                            Text(emoji)
+                            Text(draft.emoji)
                         }
-                        .emojiPicker(isPresented: $isEmojiPickerPresented, selectedEmoji: $emoji)
+                        .emojiPicker(isPresented: $isEmojiPickerPresented, selectedEmoji: $draft.emoji)
                     }
-                    ColorPicker("Background", selection: $color, supportsOpacity: false)
+                    ColorPicker("Background", selection: $draft.color, supportsOpacity: false)
                 }
             }
         }
@@ -54,14 +52,14 @@ struct AddEventView: View {
                     addEvent()
                     dismiss()
                 }
-                .disabled(title.isEmpty || emoji.isEmpty)
+                .disabled(!draft.isValid)
             }
         }
     }
     
     private func addEvent() {
         withAnimation {
-            let newEvent = TrackedEvent(color: UIColor(color), emoji: emoji, title: title, addedAt: .now, loggedInstances: [])
+            let newEvent = TrackedEvent(from: draft)
             modelContext.insert(newEvent)
         }
     }
