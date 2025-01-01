@@ -16,7 +16,7 @@ struct EventListItem: View {
         NavigationLink(value: event) {
             HStack {
                 Circle()
-                    .fill(Color(event.color))
+                    .fill(Color(event.color).gradient)
                     .frame(width: 64, height: 64)
                     .overlay {
                         Text(String(event.emoji.first!))
@@ -27,6 +27,7 @@ struct EventListItem: View {
                         .font(.headline)
                     Text("\(event.loggedInstances.count) times logged")
                         .font(.subheadline)
+                        .foregroundStyle(.secondary)
                 }
             }
         }
