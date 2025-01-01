@@ -14,6 +14,8 @@ struct EventDetailView: View {
 
     var event: TrackedEvent
     
+    @State private var showEditEvent: Bool = false
+
     var body: some View {
         InstanceListView(event: event)
         .navigationTitle(Text(event.title))
@@ -22,6 +24,16 @@ struct EventDetailView: View {
                 Button("Log", systemImage: "plus") {
                     logInstance()
                 }
+            }
+            ToolbarItem(placement: .secondaryAction) {
+                Button("Edit Event", systemImage: "pencil") {
+                    showEditEvent = true
+                }
+            }
+        }
+        .sheet(isPresented: $showEditEvent) {
+            NavigationStack {
+                EditEventView(event: event)
             }
         }
     }
