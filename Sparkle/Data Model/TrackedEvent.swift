@@ -32,15 +32,18 @@ import SwiftUI
 
     var addedAt: Date
     
+    var order: Int = 0
+    
     var pinned: Bool = false
 
     @Relationship(deleteRule: .cascade, inverse: \LoggedInstance.event)
     var loggedInstances: [LoggedInstance]
 
-    init(color: Color, emoji: String, title: String, addedAt: Date, pinned: Bool, loggedInstances: [LoggedInstance]) {
+    init(color: Color, emoji: String, title: String, addedAt: Date, order: Int, pinned: Bool, loggedInstances: [LoggedInstance]) {
         self.emoji = emoji
         self.title = title
         self.addedAt = addedAt
+        self.order = order
         self.pinned = pinned
         self.loggedInstances = loggedInstances
         self.color = color
@@ -50,6 +53,7 @@ import SwiftUI
         self.emoji = draft.emoji
         self.title = draft.title
         self.addedAt = Date.now
+        self.order = 0
         self.pinned = false
         self.loggedInstances = []
         self.color = draft.color
@@ -61,8 +65,8 @@ extension TrackedEvent {
 
     static var previewEvents: [TrackedEvent] {
         [
-            .init(color: .orange, emoji: "🍕", title: "Ate Pizza", addedAt: .now, pinned: true, loggedInstances: []),
-            .init(color: .blue, emoji: "🏢", title: "Went to the Office", addedAt: .now, pinned: false, loggedInstances: []),
+            .init(color: .orange, emoji: "🍕", title: "Ate Pizza", addedAt: .now, order: 0, pinned: true, loggedInstances: []),
+            .init(color: .blue, emoji: "🏢", title: "Went to the Office", addedAt: .now, order: 0, pinned: false, loggedInstances: []),
         ]
     }
 

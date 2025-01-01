@@ -16,13 +16,15 @@ struct EventsListView: View {
 
     private var pinnedEvents: [TrackedEvent] { allEvents.filter(\.pinned) }
     
+    @Binding var order: EventsSortOrder
     @Binding var selection: TrackedEvent?
     @Binding var eventCount: Int
     
     @State private var isPinnedSectionExpanded: Bool = true
     @State private var isAllSectionExpanded: Bool = true
     
-    init(order: EventsSortOrder, selection: Binding<TrackedEvent?>, eventCount: Binding<Int>, searchText: String) {
+    init(order: Binding<EventsSortOrder>, selection: Binding<TrackedEvent?>, eventCount: Binding<Int>, searchText: String) {
+        _order = order
         _selection = selection
         _eventCount = eventCount
 
@@ -30,16 +32,18 @@ struct EventsListView: View {
             searchText.isEmpty ? true : $0.title.contains(searchText)
         }
 
-        switch order.listBy {
+        switch order.listBy.wrappedValue {
+        case .manual:
+            _allEvents = Query(filter: predicate, sort: \TrackedEvent.order, order: .forward)
         case .dateAdded:
-            switch order.dateAddedOrder {
+            switch order.dateAddedOrder.wrappedValue {
             case .newestFirst:
                 _allEvents = Query(filter: predicate, sort: \TrackedEvent.addedAt, order: .reverse)
             case .oldestFirst:
                 _allEvents = Query(filter: predicate, sort: \TrackedEvent.addedAt, order: .forward)
             }
         case .title:
-            switch order.titleOrder {
+            switch order.titleOrder.wrappedValue {
             case .ascending:
                 _allEvents = Query(filter: predicate, sort: \TrackedEvent.title, order: .forward)
             case .descending:
@@ -102,6 +106,7 @@ struct EventsListView: View {
                 }
         }
         .onDelete(perform: deleteEvents(at:))
+        .onMove(perform: moveEvents(from:to:))
     }
     
     private func deleteEvents(at offsets: IndexSet) {
@@ -115,6 +120,16 @@ struct EventsListView: View {
             selection = nil
         }
         modelContext.delete(event)
+    }
+    
+    private func moveEvents(from source: IndexSet, to destination: Int) {
+        var events = allEvents
+        events.move(fromOffsets: source, toOffset: destination)
+        for (index, event) in events.enumerated() {
+            event.order = index
+        }
+        order.listBy = .manual
+        try? modelContext.save()
     }
     
 }
