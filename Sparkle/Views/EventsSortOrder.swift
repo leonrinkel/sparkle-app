@@ -7,16 +7,8 @@
 
 import Foundation
 
-@Observable class EventsSortOrder {
-    
-    var listBy: EventsListBy = .dateAdded
-    var dateAddedOrder: DateAddedOrder = .oldestFirst
-    var titleOrder: TitleOrder = .ascending
-    
-}
-
 // TODO: Add times logged sorting
-enum EventsListBy: CaseIterable, Identifiable, CustomStringConvertible {
+enum EventsListBy: Int, CaseIterable, Identifiable, CustomStringConvertible {
 
     case manual
     case dateAdded
@@ -37,7 +29,7 @@ enum EventsListBy: CaseIterable, Identifiable, CustomStringConvertible {
     
 }
 
-enum DateAddedOrder: CaseIterable, Identifiable, CustomStringConvertible {
+enum DateAddedOrder: Int, CaseIterable, Identifiable, CustomStringConvertible {
     
     case oldestFirst
     case newestFirst
@@ -55,7 +47,7 @@ enum DateAddedOrder: CaseIterable, Identifiable, CustomStringConvertible {
 
 }
 
-enum TitleOrder: CaseIterable, Identifiable, CustomStringConvertible {
+enum TitleOrder: Int, CaseIterable, Identifiable, CustomStringConvertible {
     
     case ascending
     case descending

@@ -10,7 +10,10 @@ import SwiftData
 
 struct ContentView: View {
     
-    @State private var order = EventsSortOrder()
+    @AppStorage("listBy") private var listBy: EventsListBy = .dateAdded
+    @AppStorage("dateAddedOrder") private var dateAddedOrder: DateAddedOrder = .oldestFirst
+    @AppStorage("titleOrder") private var titleOrder: TitleOrder = .ascending
+
     @State private var selection: TrackedEvent?
     @State private var eventCount = 0
     @State private var searchText: String = ""
@@ -18,7 +21,7 @@ struct ContentView: View {
 
     var body: some View {
         NavigationSplitView {
-            EventsListView(order: $order, selection: $selection, eventCount: $eventCount, searchText: searchText)
+            EventsListView(listBy: $listBy, dateAddedOrder: $dateAddedOrder, titleOrder: $titleOrder, selection: $selection, eventCount: $eventCount, searchText: searchText)
 #if os(macOS)
             .navigationSplitViewColumnWidth(min: 180, ideal: 200)
 #endif
@@ -37,24 +40,24 @@ struct ContentView: View {
                     }
                     Menu {
                         Menu {
-                            Picker(selection: $order.listBy) {
+                            Picker(selection: $listBy) {
                                 ForEach(EventsListBy.allCases) { option in
                                     Text(String(describing: option))
                                 }
                             } label: {
                                 Text("Events Sort Order")
                             }
-                            if order.listBy == .dateAdded {
+                            if listBy == .dateAdded {
                                 Divider()
-                                Picker(selection: $order.dateAddedOrder) {
+                                Picker(selection: $dateAddedOrder) {
                                     ForEach(DateAddedOrder.allCases) { option in
                                         Text(String(describing: option))
                                     }
                                 } label: {}
                             }
-                            if order.listBy == .title {
+                            if listBy == .title {
                                 Divider()
-                                Picker(selection: $order.titleOrder) {
+                                Picker(selection: $titleOrder) {
                                     ForEach(TitleOrder.allCases) { option in
                                         Text(String(describing: option))
                                     }
