@@ -12,19 +12,26 @@ struct EventsListView: View {
     
     @Environment(\.modelContext) private var modelContext
     
-    @Query var allEvents: [TrackedEvent]
+    @Query private var allEvents: [TrackedEvent]
+    private var pinnedEvents: [TrackedEvent] {
+        allEvents.filter(\.pinned)
+    }
 
-    private var pinnedEvents: [TrackedEvent] { allEvents.filter(\.pinned) }
-    
-    @Binding var order: EventsSortOrder
-    @Binding var selection: TrackedEvent?
-    @Binding var eventCount: Int
+    @Binding private var listBy: EventsListBy
+    @Binding private var dateAddedOrder: DateAddedOrder
+    @Binding private var titleOrder: TitleOrder
+
+    @Binding private var selection: TrackedEvent?
+    @Binding private var eventCount: Int
     
     @State private var isPinnedSectionExpanded: Bool = true
     @State private var isAllSectionExpanded: Bool = true
     
-    init(order: Binding<EventsSortOrder>, selection: Binding<TrackedEvent?>, eventCount: Binding<Int>, searchText: String) {
-        _order = order
+    init(listBy: Binding<EventsListBy>, dateAddedOrder: Binding<DateAddedOrder>, titleOrder: Binding<TitleOrder>, selection: Binding<TrackedEvent?>, eventCount: Binding<Int>, searchText: String) {
+        _listBy = listBy
+        _dateAddedOrder = dateAddedOrder
+        _titleOrder = titleOrder
+        
         _selection = selection
         _eventCount = eventCount
 
@@ -32,18 +39,18 @@ struct EventsListView: View {
             searchText.isEmpty ? true : $0.title.contains(searchText)
         }
 
-        switch order.listBy.wrappedValue {
+        switch listBy.wrappedValue {
         case .manual:
             _allEvents = Query(filter: predicate, sort: \TrackedEvent.order, order: .forward)
         case .dateAdded:
-            switch order.dateAddedOrder.wrappedValue {
+            switch dateAddedOrder.wrappedValue {
             case .newestFirst:
                 _allEvents = Query(filter: predicate, sort: \TrackedEvent.addedAt, order: .reverse)
             case .oldestFirst:
                 _allEvents = Query(filter: predicate, sort: \TrackedEvent.addedAt, order: .forward)
             }
         case .title:
-            switch order.titleOrder.wrappedValue {
+            switch titleOrder.wrappedValue {
             case .ascending:
                 _allEvents = Query(filter: predicate, sort: \TrackedEvent.title, order: .forward)
             case .descending:
@@ -128,7 +135,7 @@ struct EventsListView: View {
         for (index, event) in mutableList.enumerated() {
             event.order = index
         }
-        order.listBy = .manual
+        listBy = .manual
         try? modelContext.save()
     }
     
